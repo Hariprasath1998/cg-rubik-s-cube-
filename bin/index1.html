@@ -3,19 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous"
-    />
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
   </head>
   <body>
-    <h2 id="heading">CONTROLS</h2>
-    <hr id="line" />
     <div id="menu">
       <div id="controls">
         <!-- X -->
@@ -25,12 +16,9 @@
             id="x-1rotate"
             faceCoordinate="x"
             faceIndex="-1.08"
-            class="btn btn-light"
-            role="button"
             >X-1rotate</a
           >
         </span>
-
         <span>
           <a
             href="#x-1reverse"
@@ -38,17 +26,11 @@
             facecoordinate="x"
             faceindex="-1.08"
             reverse="true"
-            class="btn btn-light"
             >X-1reverse</a
           >
         </span>
         <span>
-          <a
-            href="#x0rotate"
-            id="x0rotate"
-            faceCoordinate="x"
-            faceIndex="0"
-            class="btn btn-light"
+          <a href="#x0rotate" id="x0rotate" faceCoordinate="x" faceIndex="0"
             >X0rotate</a
           >
         </span>
@@ -59,7 +41,6 @@
             facecoordinate="x"
             faceindex="0"
             reverse="true"
-            class="btn btn-light"
             >X0reverse</a
           >
         </span>
@@ -69,7 +50,6 @@
             id="x+1rotate"
             faceCoordinate="x"
             faceIndex="1.08"
-            class="btn btn-light"
             >X+1rotate</a
           >
         </span>
@@ -80,12 +60,10 @@
             facecoordinate="x"
             faceindex="1.08"
             reverse="true"
-            class="btn btn-light"
             >X+1reverse</a
           >
         </span>
         <br />
-
         <!-- Y -->
         <span>
           <a
@@ -93,7 +71,6 @@
             id="y-1rotate"
             faceCoordinate="y"
             faceIndex="-1.08"
-            class="btn btn-outline-info"
             >Y-1rotate</a
           >
         </span>
@@ -104,17 +81,11 @@
             facecoordinate="y"
             faceindex="-1.08"
             reverse="true"
-            class="btn btn-outline-info"
             >Y-1reverse</a
           >
         </span>
         <span>
-          <a
-            href="#y0rotate"
-            id="y0rotate"
-            faceCoordinate="y"
-            faceIndex="0"
-            class="btn btn-outline-info"
+          <a href="#y0rotate" id="y0rotate" faceCoordinate="y" faceIndex="0"
             >Y0rotate</a
           >
         </span>
@@ -125,7 +96,6 @@
             facecoordinate="y"
             faceindex="0"
             reverse="true"
-            class="btn btn-outline-info"
             >Y0reverse</a
           >
         </span>
@@ -135,7 +105,6 @@
             id="y+1rotate"
             faceCoordinate="y"
             faceIndex="1.08"
-            class="btn btn-outline-info"
             >Y+1rotate</a
           >
         </span>
@@ -146,7 +115,6 @@
             facecoordinate="y"
             faceindex="1.08"
             reverse="true"
-            class="btn btn-outline-info"
             >Y+1reverse</a
           >
         </span>
@@ -158,7 +126,6 @@
             id="z-1rotate"
             faceCoordinate="z"
             faceIndex="-1.08"
-            class="btn btn-outline-dark"
             >Z-1rotate</a
           >
         </span>
@@ -169,17 +136,11 @@
             facecoordinate="z"
             faceindex="-1.08"
             reverse="true"
-            class="btn btn-outline-dark"
             >Z-1reverse</a
           >
         </span>
         <span>
-          <a
-            href="#z0rotate"
-            id="z0rotate"
-            faceCoordinate="z"
-            faceIndex="0"
-            class="btn btn-outline-dark"
+          <a href="#z0rotate" id="z0rotate" faceCoordinate="z" faceIndex="0"
             >Z0rotate</a
           >
         </span>
@@ -190,7 +151,6 @@
             facecoordinate="z"
             faceindex="0"
             reverse="true"
-            class="btn btn-outline-dark"
             >Z0reverse</a
           >
         </span>
@@ -200,7 +160,6 @@
             id="z+1rotate"
             faceCoordinate="z"
             faceIndex="1.08"
-            class="btn btn-outline-dark"
             >Z+1rotate</a
           >
         </span>
@@ -211,14 +170,11 @@
             facecoordinate="z"
             faceindex="1.08"
             reverse="true"
-            class="btn btn-outline-dark"
             >Z+1reverse</a
           >
         </span>
       </div>
     </div>
-    <!-- <button id="deets">Group deets</button>
-    <button id="normalize">Group normalize</button> -->
     <div id="app"></div>
     <script type="module" src="/main.js"></script>
   </body>

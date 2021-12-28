@@ -1,9 +1,37 @@
 import * as THREE from 'three';
-import THREEx from 'threex.domevents';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import './style.css';
 
-let isRotating = false;
+const cubeGap = 0.08;
+// let isRotating = false;
+
+const nearestNum = (target, cubeGap) => {
+  // console.log('before', target);
+  if (target <= -1) {
+    target = -(1 + cubeGap);
+  } else if (target >= 1) {
+    target = 1 + cubeGap;
+  } else {
+    target = 0;
+  }
+  // console.log('after', target);
+  return target;
+};
+
+const normalizePosition = (cube, cubeGap) => {
+  let currX = nearestNum(Number(cube.position['x']), cubeGap);
+  let currY = nearestNum(Number(cube.position['y']), cubeGap);
+  let currZ = nearestNum(Number(cube.position['z']), cubeGap);
+  console.log(cube.position['x'], cube.position['y'], cube.position['z']);
+  // console.log(currX, currY, currZ);
+  console.log(nearestNum(Number(cube.position['x']), 0.08));
+  console.log(nearestNum(Number(cube.position['y']), 0.08));
+  console.log(nearestNum(Number(cube.position['z']), 0.08));
+  console.log(cube.position);
+
+  cube.position.set(currX, currY, currZ);
+  console.log(cube.position);
+};
 
 THREE.Object3D.prototype.rotateAroundWorldAxis = (function () {
   // rotate object around axis in world space (the axis passes through point)
@@ -26,19 +54,22 @@ THREE.Object3D.prototype.rotateAroundWorldAxis = (function () {
 })();
 
 const scene = new THREE.Scene();
-scene.add(new THREE.AxesHelper(200));
+// scene.add(new THREE.AxesHelper(200));
 
 let element = document.getElementById('app');
 
 let width = window.innerWidth;
 let height = window.innerHeight;
-console.log(width);
-console.log(height);
+// console.log(width);
+// console.log(height);
+
 const camera = new THREE.PerspectiveCamera(75, width / height, 0.5, 1000);
 
 const renderer = new THREE.WebGLRenderer();
 const controls = new OrbitControls(camera, renderer.domElement);
 renderer.setSize(window.innerWidth, window.innerHeight);
+
+// Buttons
 let text = document.createElement('h1');
 text.style.color = '#ff0000';
 text.appendChild(document.createTextNode('Hello'));
@@ -52,6 +83,7 @@ document.querySelector('canvas').appendChild(text);
 //   color: 0xff00ff,
 // });
 // cubeGeometry.translate(0, 0, 0);
+
 const cubeMaterials = [
   new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide }), //RIGHT
   new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.DoubleSide }), //LEFT
@@ -61,14 +93,14 @@ const cubeMaterials = [
   new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.DoubleSide }), //BACK
 ];
 const cubeMaterial = new THREE.MeshFaceMaterial(cubeMaterials);
+// console.log(cubeMaterial);
 
 const group = new THREE.Group();
 
-const cubeGap = 0.08;
 for (let i = -(1 + cubeGap); i < 2; i += 1 + cubeGap) {
   for (let j = -(1 + cubeGap); j < 2; j += 1 + cubeGap) {
     for (let k = -(1 + cubeGap); k < 2; k += 1 + cubeGap) {
-      const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+      const cubeGeometry = new THREE.BoxGeometry();
 
       const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
       cubeMesh.position.set(i, j, k);
@@ -78,6 +110,7 @@ for (let i = -(1 + cubeGap); i < 2; i += 1 + cubeGap) {
         color: 0x000000,
         linewidth: 1,
       });
+
       let edges = new THREE.LineSegments(edgeGeometry, edgeMaterial);
       cubeMesh.add(edges);
 
@@ -87,18 +120,18 @@ for (let i = -(1 + cubeGap); i < 2; i += 1 + cubeGap) {
 }
 
 scene.add(group);
-camera.lookAt(group);
+// camera.lookAt(group);
 
 const distance = 7;
 camera.position.x = distance;
 camera.position.y = distance;
 camera.position.z = distance;
-camera.lookAt(scene);
+// camera.lookAt(scene);
 
-console.log(group);
-console.log(group.children[0]);
-console.log(group.children[26]);
-console.log(scene);
+// console.log(group);
+// console.log(group.children[0]);
+// console.log(group.children[26]);
+// console.log(scene);
 
 // group.children.forEach((cube) => {
 //   if (cube.position['z'] === -1.08) {
@@ -117,6 +150,7 @@ function animate() {
 }
 
 animate();
+
 // let a = 0;
 // let refreshIntervalId = setInterval(() => {
 //   a++;
@@ -131,8 +165,13 @@ animate();
 //     clearInterval(refreshIntervalId);
 //   }
 // }, 10);
-
-const rotateFace = (group, faceCoordinate, faceIndex, reverse = false) => {
+// console.log(group);
+const rotateFace = async (
+  group,
+  faceCoordinate,
+  faceIndex,
+  reverse = false
+) => {
   let a = 0;
   let axis = {
     x: [1, 0, 0],
@@ -143,23 +182,53 @@ const rotateFace = (group, faceCoordinate, faceIndex, reverse = false) => {
   if (reverse === true) {
     axis[faceCoordinate] = axis[faceCoordinate].map((el) => el * -1);
   }
-  console.log(reverse);
-  isRotating = true;
+  // console.log(reverse);
+  // isRotating = true;
 
   var p = new THREE.Vector3(0, 0, 0);
+  // 0,0,0
   var ax = new THREE.Vector3(...axis[faceCoordinate]);
-  let refreshIntervalId = setInterval(() => {
+  // -1,0,0
+
+  let cubes = group.children.filter(
+    (cube) => cube.position[faceCoordinate] === faceIndex
+  );
+  // console.log(cubes);
+  let refreshIntervalId = await setInterval(() => {
     a++;
-    group.children.forEach((cube) => {
-      if (cube.position[faceCoordinate] === faceIndex) {
+    // group.children.forEach((cube) => {
+    //   if (cube.position[faceCoordinate] === faceIndex) {
+    //     cube.rotateAroundWorldAxis(p, ax, (1 * Math.PI) / 180);
+    //   }
+    // });
+    cubes.forEach((cube) => {
+      let pos = cube.position[faceCoordinate];
+      // pos = Math.round(pos * 100) / 100;
+      if (pos === faceIndex) {
         cube.rotateAroundWorldAxis(p, ax, (1 * Math.PI) / 180);
       }
     });
     if (a >= 90) {
       clearInterval(refreshIntervalId);
+      // group.children.forEach((cube) => {
+      cubes.forEach((cube) => {
+        // normalizePosition(cube);
+        cube.position.set(
+          nearestNum(cube.position['x'], 0.08),
+          nearestNum(cube.position['y'], 0.08),
+          nearestNum(cube.position['z'], 0.08)
+        );
+      });
     }
   }, 10);
-  isRotating = true;
+  // cubes.forEach((cube) => {
+  // normalizePosition(cube, cubeGap);
+  // cube.position.set(-2, 0, 2);
+  // });
+  // return cubes;
+  // console.log(cubes);
+  // console.log(group);
+  // isRotating = true;
 };
 
 // rotateFace(group, 'x', -1.08, true);
@@ -178,6 +247,26 @@ options.forEach((option) => {
   const reverse = option.getAttribute('reverse');
   option.addEventListener('click', (e) => {
     e.preventDefault();
-    rotateFace(group, faceCoordinate, faceIndex, reverse);
+    const cubeFace = rotateFace(group, faceCoordinate, faceIndex, reverse);
+    cubeFace.then((cubes) => {
+      cubes.forEach((cube) => {
+        normalizePosition(cube, cubeGap);
+      });
+    });
   });
 });
+
+// // My Dear Debuggersss!!!!
+// document.getElementById('deets').addEventListener('click', (e) => {
+//   console.log(group);
+// });
+// document.getElementById('normalize').addEventListener('click', (e) => {
+//   group.children.forEach((cube) => {
+//     // normalizePosition(cube);
+//     cube.position.set(
+//       nearestNum(cube.position['x'], 0.08),
+//       nearestNum(cube.position['y'], 0.08),
+//       nearestNum(cube.position['z'], 0.08)
+//     );
+//   });
+// });

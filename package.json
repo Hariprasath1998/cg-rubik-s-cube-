@@ -10,6 +10,7 @@
     "vite": "^2.6.4"
   },
   "dependencies": {
+    "sax": "^1.2.4",
     "three": "^0.133.1",
     "three-orbit-controls": "^82.1.0",
     "threex.domevents": "^1.0.1"
